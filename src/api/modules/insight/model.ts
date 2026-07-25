@@ -1,5 +1,7 @@
 import mongoose, { Schema, SchemaTypeOptions } from 'mongoose';
 import { InsightData } from './InsightData.ts';
+import { Repository } from '../../../lib/mongoose/Repository.ts';
+import Insight from './Insight.ts';
 
 type InsightType = Required<Omit<
 InsightData,
@@ -68,4 +70,5 @@ const insightSchema = new Schema<InsightData>(schema, {
 });
 
 const InsightModel = mongoose.model('insights', insightSchema);
+const InsightRepository = new Repository<InsightData>(InsightModel);
 export default InsightModel;

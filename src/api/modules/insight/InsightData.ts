@@ -1,6 +1,6 @@
 import { BaseData } from "../base/BaseData.ts";
 
-export interface InsightData extends BaseData {
+interface InsightData extends BaseData {
   date: string;
   water: number;
   fatMass: number;
@@ -12,3 +12,4 @@ export interface InsightData extends BaseData {
   waistAndHips: number;
 }
 
+export { InsightData }

@@ -1,5 +1,7 @@
 import mongoose, { Schema, SchemaTypeOptions } from 'mongoose';
 import { UserData } from './UserData.ts';
+import { Repository } from '../../../lib/mongoose/Repository.ts';
+import User from './User.ts';
 
 type UserType = Required<Omit<
 UserData,
@@ -34,4 +36,6 @@ const userSchema = new Schema<UserData>(schema, {
 });
 
 const UserModel = mongoose.model('users', userSchema);
-export default UserModel;
+const UserRepository = new Repository<UserData>(UserModel);
+
+export { UserModel, UserRepository };
