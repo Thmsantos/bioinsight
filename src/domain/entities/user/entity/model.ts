@@ -1,14 +1,14 @@
 import mongoose, { Schema, SchemaTypeOptions } from 'mongoose';
 import { UserData } from './UserData.ts';
-import { Repository } from '../../../lib/mongoose/Repository.ts';
+import { Repository } from '../../../../lib/mongoose/Repository.ts';
 import User from './User.ts';
 
 type UserType = Required<Omit<
-UserData,
-'_id' | 'createdAt' | 'updatedAt'
+  UserData,
+  '_id' | 'createdAt' | 'updatedAt'
 >>;
 
-type UserSchema = { [ K in keyof UserType ]: SchemaTypeOptions<UserData>[K] };
+type UserSchema = { [K in keyof UserType]: SchemaTypeOptions<UserData>[K] };
 
 const schema: UserSchema = {
   email: {

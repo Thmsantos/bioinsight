@@ -1,4 +1,4 @@
-import Base from "../base/Base.ts";
+import Base from "../../base/Base.ts";
 
 class User extends Base {
   public email!: string;

@@ -1,7 +1,7 @@
-interface RepositoryShape<T>{
+interface RepositoryShape<T> {
     create(param: T): Promise<T | null>;
     update(id: string, param: Partial<T>): Promise<T | null>;
-    get(pipeline: any[]): Promise<T[]>;
+    get(pipeline: any[]): Promise<T | null>;
     delete(id: string): Promise<boolean>;
 }
 

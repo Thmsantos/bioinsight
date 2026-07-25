@@ -20,9 +20,9 @@ class Repository<T> implements RepositoryShape<T> {
         return updated ? updated.toObject() : null;
     }
 
-    public async get(pipeline: any[]): Promise<T[]> {
+    public async get(pipeline: any[]): Promise<T> {
         const gotData = await this.model.aggregate(pipeline);
-        return gotData;
+        return gotData[0] ?? null;
     }
 
     public async delete(id: string): Promise<boolean> {

@@ -1,18 +1,23 @@
 import Fastify from "fastify";
 import type { FastifyInstance } from "fastify";
 import { connectDb } from "./api/db/connection.ts";
+import { userRoutes } from "./api/modules/entities/user/routes/routes.ts";
 
 async function appBuild(): Promise<FastifyInstance> {
-    await connectDb();
-    const app = Fastify({
-      logger: true,
-    });
+  await connectDb();
+  const app = Fastify({
+    logger: true,
+  });
 
-    app.get("/", async () => {
-      return { status: "ok" };
-    });
+  app.register(userRoutes, {
+    prefix: "/user"
+  })
 
-    return app;
+  app.get("/", async () => {
+    return { status: "ok" };
+  });
+
+  return app;
 }
 
 export default appBuild;
