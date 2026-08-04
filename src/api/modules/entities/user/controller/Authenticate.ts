@@ -2,6 +2,7 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import { Controller } from "../../../interfaces/Controller.ts";
 import { AuthenticateService } from "../../../../../domain/entities/user/service/Authenticate.ts";
 import { UserRequest } from "../interfaces/index.ts";
+import { jwt } from "../../../../../lib/jwt/index.ts";
 
 class AuthenticateController implements Controller<UserRequest> {
     constructor(
@@ -21,7 +22,10 @@ class AuthenticateController implements Controller<UserRequest> {
                 });
             }
 
+            const token = await jwt.generate(user)
+
             return reply.code(200).send({
+                token,
                 message: "Logged in successfully",
             });
 
