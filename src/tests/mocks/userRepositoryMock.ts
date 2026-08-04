@@ -1,14 +1,13 @@
+import { Types } from "mongoose";
 import { UserData } from "../../domain/entities/user/entity/UserData.ts";
 import { RepositoryShape } from "../../lib/mongoose/interface.ts";
-import { randomUUID } from "node:crypto";
-
 class UserRepositoryMock implements RepositoryShape<UserData> {
     private users: UserData[] = [];
 
     async create(param: UserData): Promise<UserData | null> {
         const user: UserData = {
             ...param,
-            _id: randomUUID(),
+            _id: String(new Types.ObjectId()),
             createdAt: new Date(),
             updatedAt: new Date(),
         };

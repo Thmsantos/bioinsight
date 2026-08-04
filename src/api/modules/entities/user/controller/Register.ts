@@ -3,14 +3,14 @@ import { ResolveFastifyRequestType } from "fastify/types/type-provider.js";
 import { IncomingMessage } from "node:http";
 import { RegisterService } from "../../../../../domain/entities/user/service/Register.ts";
 import { Controller } from "../../../interfaces/Controller.ts";
-import { UserRequest } from "../interfaces/index.ts";
+import { RegisterRequest } from "../interfaces/index.ts";
 
-class RegisterController implements Controller<UserRequest> {
+class RegisterController implements Controller<RegisterRequest> {
     constructor(
         private readonly service: RegisterService
     ) { }
 
-    public async handle(request: FastifyRequest<UserRequest>, reply: FastifyReply): Promise<FastifyReply> {
+    public async handle(request: FastifyRequest<RegisterRequest>, reply: FastifyReply): Promise<FastifyReply> {
         try {
             const user = request.body;
             const registered = await this.service.execute(user);

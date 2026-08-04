@@ -1,10 +1,26 @@
 import { RouteGenericInterface } from "fastify";
+interface GetUserRequest extends RouteGenericInterface {
+    Params: {
+        id: string;
+    }
+}
 
-interface UserRequest extends RouteGenericInterface {
+interface LoginRequest extends RouteGenericInterface {
     Body: {
         email: string;
         password: string;
     };
 }
 
-export { UserRequest }
+interface RegisterRequest extends RouteGenericInterface{
+    Body: {
+        email: string;
+        password: string;
+    };
+}
+
+export { 
+    GetUserRequest,
+    LoginRequest,
+    RegisterRequest
+}

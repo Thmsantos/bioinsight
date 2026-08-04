@@ -1,15 +1,15 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { Controller } from "../../../interfaces/Controller.ts";
 import { AuthenticateService } from "../../../../../domain/entities/user/service/Authenticate.ts";
-import { UserRequest } from "../interfaces/index.ts";
+import { LoginRequest } from "../interfaces/index.ts";
 import { jwt } from "../../../../../lib/jwt/index.ts";
 
-class AuthenticateController implements Controller<UserRequest> {
+class AuthenticateController implements Controller<LoginRequest> {
     constructor(
         private readonly service: AuthenticateService
     ) { }
 
-    public async handle(request: FastifyRequest<UserRequest>, reply: FastifyReply) {
+    public async handle(request: FastifyRequest<LoginRequest>, reply: FastifyReply) {
         try {
             const user = request.body;
             const authenticated = await this.service.execute(user);
