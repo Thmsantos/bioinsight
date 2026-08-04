@@ -1,6 +1,7 @@
 import { RepositoryShape } from "../../../../lib/mongoose/interface.ts";
 import { UserData } from "../entity/UserData.ts";
 import { Service } from "../../../interfaces/Service.ts";
+import { hashPasswd } from "../../../../lib/bcrypt/index.ts";
 
 class AuthenticateService implements Service<UserData> {
     constructor(
@@ -12,8 +13,9 @@ class AuthenticateService implements Service<UserData> {
             $match: { email: params.email }
         }]
 
-        const findedUser = await this.repository.get(pipeline);
-        if (!findedUser || (findedUser.password !== params.password)) {
+        const findedUser = await this.repository.get(pipeline); 
+        
+        if (!findedUser || await hashPasswd.compare(findedUser?.password, params.password)) {
             return null;
         }
 

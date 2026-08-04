@@ -1,6 +1,7 @@
 import { RepositoryShape } from "../../../../lib/mongoose/interface.ts";
 import { UserData } from "../entity/UserData.ts";
 import { Service } from "../../../interfaces/Service.ts";
+import { hashPasswd } from "../../../../lib/bcrypt/index.ts";
 
 class RegisterService implements Service<UserData> {
     constructor(
@@ -9,9 +10,16 @@ class RegisterService implements Service<UserData> {
 
     public async execute(params: UserData) {
         const userAlreadyExists = await this.userAlreadyExists(params.email);
-
+        
         if (!userAlreadyExists) {
-            const registered = await this.repository.create(params);
+            const hashedPassword = await hashPasswd.encrypt(params.password);
+
+            const userToCreate = {
+                ...params,
+                password: hashedPassword
+            };
+
+            const registered = await this.repository.create(userToCreate);
             return registered
         }
 
