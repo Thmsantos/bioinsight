@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Types } from "mongoose";
 import { RepositoryShape } from "./interface.ts";
 
 class Repository<T> implements RepositoryShape<T> {
@@ -12,12 +12,14 @@ class Repository<T> implements RepositoryShape<T> {
     }
 
     public async update(id: string, param: Partial<T>): Promise<T | null> {
-        const updated = await this.model.findByIdAndUpdate({
-            id,
+        const toObjectId = new Types.ObjectId(id);
+        const updated = await this.model.findByIdAndUpdate(
+            toObjectId,
             param,
-        });
+            { new: true }
+        );
 
-        return updated ? updated.toObject() : null;
+        return updated ? updated : null;
     }
 
     public async get(pipeline: any[]): Promise<T> {

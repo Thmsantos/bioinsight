@@ -1,6 +1,6 @@
 import { FastifyInstance } from "fastify";
-import { authenticateController, getUserController, registerController } from "../controller/index.ts";
-import { GetUserRequest, LoginRequest, RegisterRequest } from "../interfaces/index.ts";
+import { authenticateController, getUserController, registerController, updateUserController } from "../controller/index.ts";
+import { GetUserRequest, LoginRequest, RegisterRequest, UpdateUserRequest } from "../interfaces/index.ts";
 import { request } from "node:http";
 
 async function userRoutes(app: FastifyInstance) {
@@ -22,6 +22,13 @@ async function userRoutes(app: FastifyInstance) {
         "/register",
         async (request, reply) => {
             return registerController.handle(request, reply)
+        }
+    )
+
+    app.put<UpdateUserRequest>(
+        "/",
+        async (request, reply) => {
+            return updateUserController.handle(request, reply)
         }
     )
 }

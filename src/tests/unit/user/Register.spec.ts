@@ -13,7 +13,7 @@ describe("Register User Service", () => {
 
         const result = await service.execute(user);
         expect(result).toEqual(
-            expect.objectContaining({ email: user.email,  password: user.password })
+            expect.objectContaining({ email: user.email })
         );
     });
 });

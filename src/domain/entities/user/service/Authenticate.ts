@@ -14,8 +14,9 @@ class AuthenticateService implements Service<UserData> {
         }]
 
         const findedUser = await this.repository.get(pipeline); 
-        
-        if (!findedUser || await hashPasswd.compare(findedUser?.password, params.password)) {
+
+        const compare = findedUser ? await hashPasswd.compare(params.password, findedUser.password) : null
+        if (!compare) {
             return null;
         }
 
