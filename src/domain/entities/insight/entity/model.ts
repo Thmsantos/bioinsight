@@ -1,22 +1,31 @@
 import mongoose, { Schema, SchemaTypeOptions } from 'mongoose';
 import { InsightData } from './InsightData.ts';
-import { Repository } from '../../../lib/mongoose/Repository.ts';
-import Insight from './Insight.ts';
+import { Repository } from '../../../../lib/mongoose/Repository.ts';
 
 type InsightType = Required<Omit<
-InsightData,
-'_id' | 'createdAt' | 'updatedAt'
+  InsightData,
+  '_id' | 'createdAt' | 'updatedAt'
 >>;
 
-type InsightModel = { [ K in keyof InsightType ]: SchemaTypeOptions<InsightData>[K] };
+type InsightModel = { [K in keyof InsightType]: SchemaTypeOptions<InsightData>[K] };
 
 const schema: InsightModel = {
+  filename: {
+    type: Schema.Types.String,
+    required: true
+  },
+
   date: {
     type: Schema.Types.String,
     required: true,
   },
 
   water: {
+    type: Schema.Types.Number,
+    required: true,
+  },
+
+  protein: {
     type: Schema.Types.Number,
     required: true,
   },
@@ -54,6 +63,11 @@ const schema: InsightModel = {
   waistAndHips: {
     type: Schema.Types.Number,
     required: true,
+  },
+
+  userId: {
+    type: Schema.Types.String,
+    required: true,
   }
 };
 
@@ -61,7 +75,7 @@ const insightSchema = new Schema<InsightData>(schema, {
   timestamps: true,
   versionKey: false,
   toObject: {
-    transform(doc, ret: any) {
+    transform(ret: any) {
       const obj = ret;
       obj.id = obj._id.toString();
       delete obj._id;
@@ -70,5 +84,9 @@ const insightSchema = new Schema<InsightData>(schema, {
 });
 
 const InsightModel = mongoose.model('insights', insightSchema);
-const InsightRepository = new Repository<InsightData>(InsightModel);
-export default InsightModel;
+const insightRepository = new Repository<InsightData>(InsightModel);
+
+export {
+  InsightModel,
+  insightRepository
+};
