@@ -1,11 +1,29 @@
 import { FastifyInstance } from "fastify";
-import { authenticateController, getUserController, registerController, updateUserController } from "../controller/index.ts";
-import { GetUserRequest, LoginRequest, RegisterRequest, UpdateUserRequest } from "../interfaces/index.ts";
-import { request } from "node:http";
+import { 
+    authenticateController,
+    deleteUserController,
+    getUserController,
+    registerController,
+    updateUserController
+} from "../controller/index.ts";
+import { 
+    DeleteUserRequest,
+    GetUserRequest,
+    LoginRequest,
+    RegisterRequest,
+    UpdateUserRequest
+} from "../interfaces/index.ts";
 import { authMiddleware } from "../../../../middleware/authMiddleware.ts";
 
 async function userRoutes(app: FastifyInstance) {
     app.addHook('onRequest', authMiddleware);
+
+    app.delete<DeleteUserRequest>(
+        "/:id",
+        async (request, reply) => {
+            return deleteUserController.handle(request, reply)
+        }
+    )
 
     app.get<GetUserRequest>(
         "/getUser/:id",

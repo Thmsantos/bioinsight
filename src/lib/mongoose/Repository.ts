@@ -28,7 +28,7 @@ class Repository<T> implements RepositoryShape<T> {
     }
 
     public async delete(id: string): Promise<boolean> {
-        const result = await this.model.deleteOne({ _id: id });
+        const result = await this.model.deleteOne({ _id: new Types.ObjectId(id) });
         return result.deletedCount === 1;
     }
 }

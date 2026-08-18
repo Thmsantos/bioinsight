@@ -1,9 +1,12 @@
 import { RouteGenericInterface } from "fastify";
 import { UserData } from "../../../../../domain/entities/user/entity/UserData.ts";
+
+interface DeleteUserRequest extends RouteGenericInterface {
+    Params: { id: string }
+}
+
 interface GetUserRequest extends RouteGenericInterface {
-    Params: {
-        id: string;
-    }
+    Params: { id: string }
 }
 
 interface LoginRequest extends RouteGenericInterface {
@@ -24,7 +27,8 @@ interface UpdateUserRequest extends RouteGenericInterface {
     Body: UserData;
 }
 
-export { 
+export {
+    DeleteUserRequest, 
     GetUserRequest,
     LoginRequest,
     RegisterRequest,
