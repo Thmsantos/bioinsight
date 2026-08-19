@@ -62,6 +62,29 @@ class UserRepositoryMock implements RepositoryShape<UserData> {
         return user ?? null;
     }
 
+    async search(
+        pipeline: any[]
+    ): Promise<UserData[] | []> {
+        const matchStage = pipeline.find(
+            stage => stage.$match
+        );
+
+        if (!matchStage) {
+            return [];
+        }
+
+        const filters = matchStage.$match;
+
+        const users = this.users.filter(user => {
+            return Object.entries(filters)
+                .every(([key, value]) => {
+                    return user[key as keyof UserData] === value;
+                });
+        });
+
+        return users;
+    }
+
     async delete(id: string): Promise<boolean> {
         const userIndex = this.users.findIndex(
             user => user._id === id

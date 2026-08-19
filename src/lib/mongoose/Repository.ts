@@ -31,6 +31,11 @@ class Repository<T> implements RepositoryShape<T> {
         const result = await this.model.deleteOne({ _id: new Types.ObjectId(id) });
         return result.deletedCount === 1;
     }
+
+    public async search(pipeline: any[]): Promise<[] | T[]> {
+        const searchedData = await this.model.aggregate(pipeline);
+        return searchedData;
+    }
 }
 
 export { Repository }
