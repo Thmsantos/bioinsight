@@ -3,6 +3,7 @@ import { Controller } from "../../../interfaces/Controller.ts";
 import { AuthenticateService } from "../../../../../domain/entities/user/service/Authenticate.ts";
 import { LoginRequest } from "../interfaces/index.ts";
 import { jwt } from "../../../../../lib/jwt/index.ts";
+import { logger } from "../../../../../lib/pino/logger.ts";
 
 class AuthenticateController implements Controller<LoginRequest> {
     constructor(
@@ -30,6 +31,7 @@ class AuthenticateController implements Controller<LoginRequest> {
             });
 
         } catch (err) {
+            logger.error(err)
             return reply.code(500).send({
                 statusCode: 500,
                 error: "Internal Server Error",

@@ -2,6 +2,7 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import { GetInsightService } from "../../../../../domain/entities/insight/service/GetInsight.ts";
 import { GetInsightRequest } from "../interfaces/index.ts";
 import { Controller } from "../../../interfaces/Controller.ts";
+import { logger } from "../../../../../lib/pino/logger.ts";
 
 class GetInsightController implements Controller<GetInsightRequest>{
     constructor(
@@ -27,7 +28,8 @@ class GetInsightController implements Controller<GetInsightRequest>{
                 statusCode: 200,
                 data: findedInsight
             })
-        } catch (err: any) {
+        } catch (err) {
+            logger.error(err)
             return reply.code(500).send({
                 statusCode: 500,
                 error: "Internal Server Error"

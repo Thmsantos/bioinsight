@@ -2,6 +2,7 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import { UpdateUserService } from "../../../../../domain/entities/user/service/UpdateUser.ts";
 import { UpdateUserRequest } from "../interfaces/index.ts";
 import { Controller } from "../../../interfaces/Controller.ts";
+import { logger } from "../../../../../lib/pino/logger.ts";
 
 class UpdateUserController implements Controller<UpdateUserRequest> {
     constructor(
@@ -26,6 +27,7 @@ class UpdateUserController implements Controller<UpdateUserRequest> {
                 message: "successfully updated"
             })
         } catch (err) {
+            logger.error(err)  
             return reply.code(500).send({
                 statusCode: 500,
                 error: "Internal Server Error",

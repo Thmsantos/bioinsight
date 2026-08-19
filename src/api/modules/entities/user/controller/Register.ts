@@ -4,6 +4,7 @@ import { IncomingMessage } from "node:http";
 import { RegisterService } from "../../../../../domain/entities/user/service/Register.ts";
 import { Controller } from "../../../interfaces/Controller.ts";
 import { RegisterRequest } from "../interfaces/index.ts";
+import { logger } from "../../../../../lib/pino/logger.ts";
 
 class RegisterController implements Controller<RegisterRequest> {
     constructor(
@@ -27,6 +28,7 @@ class RegisterController implements Controller<RegisterRequest> {
                 message: "Registered user!"
             })
         } catch (err) {
+            logger.error(err)          
             return reply.code(500).send({
                 statusCode: 500,
                 error: "Internal Server Error",

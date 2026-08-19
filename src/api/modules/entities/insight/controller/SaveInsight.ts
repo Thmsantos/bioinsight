@@ -2,6 +2,7 @@ import { FastifyRequest, FastifyReply } from "fastify";
 import { Controller } from "../../../interfaces/Controller.ts";
 import { SaveInsightService } from "../../../../../domain/entities/insight/service/SaveInsight.ts";
 import { SaveInsightRequest } from "../interfaces/index.ts";
+import { logger } from "../../../../../lib/pino/logger.ts";
 
 class SaveInsightController implements Controller<SaveInsightRequest> {
   constructor(
@@ -56,6 +57,7 @@ class SaveInsightController implements Controller<SaveInsightRequest> {
         data: insight
       });
     } catch (err: any) {
+      logger.error(err)
       return reply.code(500).send({
         statusCode: 500,
         error: "Internal Server Error",
