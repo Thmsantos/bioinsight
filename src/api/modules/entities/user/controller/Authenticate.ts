@@ -27,7 +27,7 @@ class AuthenticateController implements Controller<LoginRequest> {
 
             return reply.code(200).send({
                 token,
-                message: "Logged in successfully",
+                user: authenticated,
             });
 
         } catch (err) {

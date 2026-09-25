@@ -3,7 +3,7 @@ import { UserData } from "../entity/UserData.ts";
 import { Service } from "../../../interfaces/Service.ts";
 import { hashPasswd } from "../../../../lib/bcrypt/index.ts";
 
-class AuthenticateService implements Service<UserData> {
+class AuthenticateService implements Service<Omit<UserData, 'password'>> {
     constructor(
         private readonly repository: RepositoryShape<UserData>
     ) { }
@@ -15,12 +15,17 @@ class AuthenticateService implements Service<UserData> {
 
         const findedUser = await this.repository.get(pipeline); 
 
-        const compare = findedUser ? await hashPasswd.compare(params.password, findedUser.password) : null
-        if (!compare) {
-            return null;
-        }
+        if(!findedUser){ return null; }
 
-        return params;
+        const compare = await hashPasswd.compare(
+            params.password,
+            findedUser.password
+        );
+        
+        if (!compare) { return null; }
+
+        const { password, ...user } = findedUser;
+        return user;
     }
 }
 
