@@ -42,7 +42,7 @@ class SaveInsightController implements Controller<SaveInsightRequest> {
           error: "Bad Request",
           message: "userId is required"
         });
-}
+      }
 
       const buffer = await fileData.toBuffer();
 
@@ -57,11 +57,20 @@ class SaveInsightController implements Controller<SaveInsightRequest> {
         data: insight
       });
     } catch (err: any) {
-      logger.error(err)
+      logger.error(err);
+
+      if (err.code === 11000 || err.message?.includes('E11000')) {
+        return reply.code(409).send({
+          statusCode: 409,
+          error: "Conflict",
+          message: "A file with this name has already been uploaded."
+        });
+      }
+
       return reply.code(500).send({
         statusCode: 500,
         error: "Internal Server Error",
-        message: err.message || "err in insight proccess"
+        message: err.message || "err in insight process"
       });
     }
   }

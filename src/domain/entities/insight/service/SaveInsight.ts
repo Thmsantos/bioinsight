@@ -14,8 +14,9 @@ class SaveInsightService implements Service<InsightData> {
 
   public async execute(params: UploadInsightParams): Promise<InsightData | null> {
     const extractedData = await this.extractPdfData(params.buffer);
-    if (!extractedData) { throw new Error("extract pdf error") }
-    await this.saveFileToDisk(params.filename, params.buffer);
+    if (!extractedData) { 
+      throw new Error("extract pdf error"); 
+    }
 
     const insightToCreate: Omit<InsightData, "_id" | "createdAt" | "updatedAt"> = {
       userId: params.userId,
@@ -24,6 +25,7 @@ class SaveInsightService implements Service<InsightData> {
     };
 
     const created = await this.repository.create(insightToCreate as InsightData);
+    await this.saveFileToDisk(params.filename, params.buffer);
     return created;
   }
 

@@ -83,6 +83,7 @@ const insightSchema = new Schema<InsightData>(schema, {
   },
 });
 
+insightSchema.index({ userId: 1, filename: 1 }, { unique: true });
 const InsightModel = mongoose.model('insights', insightSchema);
 const insightRepository = new Repository<InsightData>(InsightModel);
 
