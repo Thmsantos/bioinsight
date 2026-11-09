@@ -8,12 +8,24 @@ class GetInsightService implements Service<InsightData[]>{
     ) { }
 
     public async execute(id: string): Promise<InsightData[] | null>{
-        const findedInsight = await this.repository.search([{
-            '$match': { userId: id}
-        }])
+        const findedInsight = await this.repository.search([
+            { $match: { userId: id }},
+            {
+                $addFields: {
+                    parsedDate: {
+                        $dateFromString: {
+                            dateString: "$date",
+                            format: "%d/%m/%Y"
+                        }
+                    }
+                }
+            },
+            { $sort: { parsedDate: 1 }},
+            { $project: { parsedDate: 0 }}
+        ]);
 
-        return findedInsight
+        return findedInsight;
     }
 }
 
-export { GetInsightService }
+export { GetInsightService };
