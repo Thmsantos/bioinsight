@@ -1,6 +1,9 @@
 import { RouteGenericInterface } from "fastify";
 import { MultipartFile } from "@fastify/multipart";
 
+interface DeleteInsightRequest extends RouteGenericInterface {
+  Params: { id: string }
+}
 interface GetInsightRequest extends RouteGenericInterface {
   Params: { id: string }
 }
@@ -12,7 +15,8 @@ interface SaveInsightRequest extends RouteGenericInterface {
   };
 }
 
-export { 
+export {
+  DeleteInsightRequest, 
   GetInsightRequest,
   SaveInsightRequest
 }

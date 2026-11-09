@@ -1,11 +1,18 @@
 import { FastifyInstance } from "fastify";
 import { authMiddleware } from "../../../../middleware/authMiddleware.ts";
-import { getInsightController, saveInsightController } from "../controller/index.ts";
-import { GetInsightRequest, SaveInsightRequest } from "../interfaces/index.ts";
+import { deleteInsightController, getInsightController, saveInsightController } from "../controller/index.ts";
+import { DeleteInsightRequest, GetInsightRequest, SaveInsightRequest } from "../interfaces/index.ts";
+import { request } from "node:http";
 
 async function insightRoutes(app: FastifyInstance) {
   app.addHook('onRequest', authMiddleware);
 
+  app.delete<DeleteInsightRequest>(
+    "/:id",
+    async (request, reply) => {
+      return deleteInsightController.handle(request, reply);
+    }
+  )
   app.get<GetInsightRequest>(
     "/:id",
     async (request, reply) => {
