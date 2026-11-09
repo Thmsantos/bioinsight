@@ -11,7 +11,7 @@ async function appBuild(): Promise<FastifyInstance> {
   const app = Fastify({ logger: true });
 
   await app.register(cors, {
-    origin: "http://localhost:5173",
+    origin: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
   });
 
