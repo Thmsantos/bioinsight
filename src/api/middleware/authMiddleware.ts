@@ -3,25 +3,29 @@ import { jwt } from "../../lib/jwt/index.ts";
 import { getUserService } from "../../domain/entities/user/service/index.ts";
 
 async function authMiddleware(request: FastifyRequest, reply: FastifyReply): Promise<void> {
-    const token = request.headers.authorization;
+    const authHeader = request.headers.authorization;
 
-    try{
-        const data = jwt.verify(token!);
-        if(data){
-            const findedUser = await getUserService.execute({ id: data._id! })
-            if(!findedUser){
-                reply.code(403).send({
-                    message: 'forbidden'
-                })
+    if (!authHeader) {
+        return reply.code(401).send({ message: "Token missing" });
+    }
+
+    const token = authHeader.startsWith("Bearer ") ? authHeader.split(" ")[1] : authHeader;
+
+    try {
+        const data = jwt.verify(token);
+        if (data) {
+            const findedUser = await getUserService.execute({ id: data._id! });
+            if (!findedUser) {
+                return reply.code(403).send({ message: "forbidden" });
             }
         }
     } catch (err) {
-        reply.code(500).send({
-            statusCode: 500,
+        return reply.code(401).send({
+            statusCode: 401,
             error: err,
-            message: "Something went wrong",
-        })
+            message: "Invalid or expired token",
+        });
     }
 }
 
-export { authMiddleware }
+export { authMiddleware };

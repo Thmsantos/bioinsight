@@ -22,8 +22,9 @@ class AuthenticateController implements Controller<LoginRequest> {
                     message: "Invalid email or password",
                 });
             }
-
-            const token = await jwt.generate(user)
+            
+            const { createdAt, updatedAt, ...payloadToToken } = authenticated;
+            const token = await jwt.generate(payloadToToken)
 
             return reply.code(200).send({
                 token,

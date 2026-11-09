@@ -12,9 +12,6 @@ class GetUserService implements Service<UserData>{
         const pipeline = [{
             $match: { _id: new Types.ObjectId(params.id)}
         }];
-
-        console.log(pipeline)
-
         const findedUser = await this.repository.get(pipeline);
 
         return findedUser ? findedUser : null;
