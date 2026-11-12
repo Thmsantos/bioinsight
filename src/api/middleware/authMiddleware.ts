@@ -28,4 +28,16 @@ async function authMiddleware(request: FastifyRequest, reply: FastifyReply): Pro
     }
 }
 
+async function whoRequested(request: FastifyRequest): Promise<string | undefined>{
+    const authHeader = request.headers.authorization;
+    const token = authHeader?.startsWith("Bearer ") ? authHeader.split(" ")[1] : authHeader;
+    
+    if(!token){
+        return undefined;
+    }
+
+    const user = jwt.verify(token);
+    return user ? user._id : undefined;
+}
+
 export { authMiddleware };
